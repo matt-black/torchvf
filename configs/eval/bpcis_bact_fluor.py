@@ -10,8 +10,8 @@ def get_config():
 
     cfg.CONFIG_DIR = "./configs/eval/bpcis_bact_fluor.py"
 
-    cfg.MODEL_DIR  = "./weights/bact_fluor/h1/model.pth"
-    cfg.SAVE_DIR = "./weights/bact_fluor/h1/"
+    cfg.MODEL_DIR  = "./weights/bact_fluor/model_0007/model_1000.pth"
+    cfg.SAVE_DIR = "./weights/bact_fluor/model_0007/"
 
     cfg.BATCH_SIZE = 1
 

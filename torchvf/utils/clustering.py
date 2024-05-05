@@ -76,8 +76,3 @@ def cluster(points, semantic, eps = 2.2, min_samples = 15, snap_noise = True):
     instance_segmentation[semantic] = clusters + 1
 
     return instance_segmentation
-
-
-
-
-

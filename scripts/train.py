@@ -56,7 +56,7 @@ train_dataset = BPCIS(
     cfg.DATA.DIR, 
     split = cfg.DATA.SPLIT,
     vf = cfg.DATA.VF, 
-    vf_delimeter = cfg.DATA.VF_DELIM,
+    vf_delimiter = cfg.DATA.VF_DELIM,
     transforms = transforms[cfg.DATA.TRANSFORMS], 
     remove = cfg.DATA.REMOVE, 
     copy = cfg.DATA.COPY
@@ -210,8 +210,3 @@ for epoch in range(1, cfg.EPOCHS + 1):
         ax3.imshow(pred_semantic[0][0].detach().cpu())
         plt.savefig(os.path.join(save_to, f"image_{epoch}.png"), dpi = 400)
         plt.close()
-
-
-
-
-

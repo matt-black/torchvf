@@ -4,14 +4,14 @@ from ml_collections import config_dict
 def get_config():
     cfg = config_dict.ConfigDict()
 
-    cfg.DEVICE = "cuda:0"
+    cfg.DEVICE = "cuda"
 
-    cfg.MODEL_TYPE = "h2"
+    cfg.MODEL_TYPE = "h1"
 
     cfg.CONFIG_DIR = "./configs/eval/bpcis_bact_phase.py"
 
-    cfg.MODEL_DIR  = "./weights/bact_phase/h2_old/model.pth" 
-    cfg.SAVE_DIR = "./weights/bact_phase/h2_old/"
+    cfg.MODEL_DIR  = "./weights/bact_phase/h1/model.pth" 
+    cfg.SAVE_DIR = "./weights/bact_phase/h1/"
 
     cfg.BATCH_SIZE = 1
 

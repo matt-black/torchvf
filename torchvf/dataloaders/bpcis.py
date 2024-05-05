@@ -61,34 +61,33 @@ class BPCIS(Dataset):
         __getitem__: Return the image and mask respectively of index i. 
 
     """
-    def __init__(self, data_dir, split = "bact_fluor_train", vf = False, vf_delimeter = "_vf", transforms = None, copy = None, remove = None): 
+    def __init__(self, data_dir, split = "bact_fluor_train",
+                 vf = False, vf_delimiter = "_vf", transforms = None,
+                 copy = None, remove = None):
         self.transforms = transforms 
-
         self.split_dir = os.path.join(data_dir, split)
 
-        self.imgs  = sorted(glob.glob(os.path.join(self.split_dir, "*_img.tif")))
-        self.masks = sorted(glob.glob(os.path.join(self.split_dir, "*_masks.tif")))
-        
-        if vf: 
-            self.vfs = sorted(glob.glob(os.path.join(self.split_dir, f"*{vf_delimeter}.npy")))
-
+        self.imgs, self.masks, self.vfs = [], [], []
+        for root, _, files in os.walk(self.split_dir):
+            msks = [f for f in files if f.endswith('_masks.tif')]
+            imgs = [f[:-10]+".tif" for f in msks]
+            vfs  = [i.replace(".tif", f"{vf_delimiter}.npy") for i in imgs]
+            self.masks += [os.path.join(root, m) for m in msks]
+            self.imgs += [os.path.join(root, i) for i in imgs]
+            self.vfs += [os.path.join(root, "..", vf) for vf in vfs]
+        if vf:
             self._getitem = self._get_image_mask_vf
-
         else:
             self._getitem = self._get_image_mask
-        
         if copy is not None:
             for i in range(len(copy)):
                 self.imgs.append(self.imgs[i])
                 self.masks.append(self.masks[i])
-
                 if vf:
                     self.vfs.append(self.vfs[i])
-
         if remove is not None:
             self.imgs  = [i for j, i in enumerate(self.imgs) if j not in remove]
             self.masks = [i for j, i in enumerate(self.masks) if j not in remove]
-
             if vf:
                 self.vfs = [i for j, i in enumerate(self.vfs) if j not in remove]
 
@@ -96,8 +95,12 @@ class BPCIS(Dataset):
         input_dir = self.imgs[idx]
         mask_dir  = self.masks[idx]
 
-        image = cv2.imread(input_dir, cv2.IMREAD_GRAYSCALE).astype(np.float32)[None]
-        mask  = cv2.imread(mask_dir,  cv2.IMREAD_UNCHANGED).astype(np.float32)[None]
+        image = cv2.imread(input_dir, cv2.IMREAD_GRAYSCALE).astype(
+            np.float32
+        )[None]
+        mask  = cv2.imread(mask_dir,  cv2.IMREAD_UNCHANGED).astype(
+            np.float32
+        )[None]
 
         if self.transforms is not None:
             image, mask, _ = self.transforms(image, mask)
@@ -109,13 +112,15 @@ class BPCIS(Dataset):
         mask_dir  = self.masks[idx]
         vf_dir    = self.vfs[idx]
 
-        image = cv2.imread(input_dir, cv2.IMREAD_GRAYSCALE).astype(np.float32)[None]
-        mask  = cv2.imread(mask_dir,  cv2.IMREAD_UNCHANGED).astype(np.float32)[None]
+        image = cv2.imread(input_dir, cv2.IMREAD_GRAYSCALE).astype(
+            np.float32
+        )[None]
+        mask  = cv2.imread(mask_dir,  cv2.IMREAD_UNCHANGED).astype(
+            np.float32
+        )[None]
         vf    = np.load(vf_dir).astype(np.float32)
-
         if self.transforms is not None:
             image, mask, vf = self.transforms(image, mask, vf)
-
         return image, vf, mask
 
     def __getitem__(self, idx):
@@ -123,8 +128,3 @@ class BPCIS(Dataset):
 
     def __len__(self):
         return len(self.imgs)
-
-
-
-
-

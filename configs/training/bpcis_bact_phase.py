@@ -9,7 +9,7 @@ def get_config():
     cfg.MODEL_TYPE = "h1"
 
     cfg.CONFIG_DIR = "training/bpcis_bact_phase.py"
-    cfg.WEIGHT_DIR = "./weights/bact_phase/"
+    cfg.WEIGHT_DIR = "./weights/bact_phase/h1/"
 
     cfg.EPOCHS = 1000
     cfg.BATCH_SIZE = 2
