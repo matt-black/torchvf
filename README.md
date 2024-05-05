@@ -120,7 +120,8 @@ instance_segmentation = cluster(
 | Interpolator            | Implemented          |
 | ----------------------- | -------------------- |
 | DBSCAN (Scikit-learn)   | :white_check_mark:   |
-| DCSCAN (PyTorch)        | :white_large_square: |
+| DBSCAN (CuML)           | :white_check_mark:   |
+| DBCSCAN (PyTorch)       | :white_large_square: |
 | ...?                    | :white_large_square: | 
 
 </details>
@@ -159,9 +160,12 @@ instance_segmentation = cluster(
 
 The ultimate goal of TorchVF is to be solely dependent on PyTorch. Although at
 the moment, the signed distance function computation relies on Seung Lab's
-euclidean distance transform [library](https://github.com/seung-lab/euclidean-distance-transform-3d)
-and the DBSCAN clustering implementation relies on Scikit-learn.  Furthermore,
-NumPy appears in various places (mAP IoU metric, clustering, ...).
+euclidean distance transform [library](https://github.com/seung-lab/euclidean-distance-transform-3d).
+
+DBSCAN clustering relies on Scikit-learn (cpu) and CuML (cpu).  
+Furthermore, NumPy and CuPy appear in various places (mAP IoU metric, clustering, ...).
+
+Installing [rapids.ai](https://rapids.ai) with PyTorch should take care of all the dependencies.
 
 ## Reproducability
 
