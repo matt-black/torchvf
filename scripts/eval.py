@@ -157,10 +157,11 @@ with torch.inference_mode():
         #    segmentation. 
         instance_segmentation = cluster(
             solutions, 
-            pred_semantic[0], 
+            pred_semantic[0],
+            'dbscan',
+            snap_noise = cfg.CLUSTERING.SNAP_NOISE,
             eps = cfg.CLUSTERING.EPS, 
-            min_samples = cfg.CLUSTERING.MIN_SAMPLES,
-            snap_noise = cfg.CLUSTERING.SNAP_NOISE
+            min_samples = cfg.CLUSTERING.MIN_SAMPLES
         )
 
         solution_time = time.time() - step_time

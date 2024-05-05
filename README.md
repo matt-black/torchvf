@@ -74,10 +74,11 @@ semantic = semantic.cpu()
 # instance segmentation. 
 instance_segmentation = cluster(
     solutions, 
-    semantic[0], 
+    semantic[0],
+    'dbscan',
+    snap_noise = False,
     eps = 2.25,
-    min_samples = 15,
-    snap_noise = False
+    min_samples = 15
 )
 
 ```
@@ -122,6 +123,8 @@ instance_segmentation = cluster(
 | DBSCAN (Scikit-learn)   | :white_check_mark:   |
 | DBSCAN (CuML)           | :white_check_mark:   |
 | DBCSCAN (PyTorch)       | :white_large_square: |
+| HDBSCAN (Scikit-learn)  | :white_check_mark:   |
+| HDBSCAN (CuML)          | :white_check_mark:   |
 | ...?                    | :white_large_square: | 
 
 </details>
