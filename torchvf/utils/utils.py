@@ -41,36 +41,29 @@ def mask_bounding_box(mask):
 
     """
     non_zero_idx = np.where(mask == 1)
-
     x = non_zero_idx[1]
     y = non_zero_idx[0]
-
     bounding_box = [
         np.min(x),
         np.min(y),
         np.max(x) + 1,
         np.max(y) + 1
     ]
-
     return bounding_box
 
 
 def reshape_min(x, min_value = 256, interp = None):
     _, C, H, W = x.shape
-    
     # Only rescale if needed
     if (H >= min_value) and (W >= min_value):
         return x
-    
     if H < W: 
         ratio = min_value / H
         new_shape = (min_value, math.ceil(W * ratio))
     else: 
         ratio = min_value / W
         new_shape = (math.ceil(H * ratio), min_value)
-        
     resized_image = torchvision.transforms.Resize(new_shape)(x)
-    
     return resized_image
 
 
@@ -82,23 +75,28 @@ def batch_of_n(arr, n):
 
 def next_model(weight_dir):
     files = sorted(os.listdir(weight_dir))
-
     subdirs = []
     for file in files:
         if (os.path.isdir(os.path.join(weight_dir, file)) and file.startswith("model_")):
             subdirs.append(file)
-    
     if not subdirs:
         model_dir = os.path.join(weight_dir, "model_0000/")
-        os.makedirs(model_dir)
-        return model_dir
-
-    model_n    = int(subdirs[-1].split("_")[-1]) + 1
-    next_model = f"model_{model_n:04}/"
-    model_dir  = os.path.join(weight_dir, next_model) 
+    else:
+        model_n    = int(subdirs[-1].split("_")[-1]) + 1
+        next_model = f"model_{model_n:04}/"
+        model_dir  = os.path.join(weight_dir, next_model) 
     os.makedirs(model_dir)
-
+    # make other directories
+    os.makedirs(os.path.join(model_dir, 'chkpt'))  # checkpoints
+    os.makedirs(os.path.join(model_dir, 'loss'))   # loss values
+    os.makedirs(os.path.join(model_dir, 'img'))    # images
     return model_dir
+
+
+def make_loss_csv(directory, loss_name):
+    fpath = os.path.join(directory, f"{loss_name}.csv")
+    with open(fpath, 'w') as f:
+        f.writelines(['epoch,train,valid'])    
 
 
 def save_model(filename, model):
@@ -113,10 +111,8 @@ def save_model(filename, model):
 
 def load_model(filename, model):
     assert os.path.exists(filename), "Model dir does not exist!"
-
     print(f"Loading model from: {filename}")
     model.load_state_dict(torch.load(filename))
-
     return model
 
 
@@ -133,7 +129,6 @@ def save_checkpoint(filename, checkpoint):
     if not os.path.exists(dir_name):
         print(f"Save checkpoint dir does not exist, making dir '{dir_name}'")
         os.makedirs(dir_name)
-
     print(f"Saving checkpoint to: {filename}")
     torch.save(checkpoint, filename)
 
@@ -148,17 +143,13 @@ def load_checkpoint(filename, model, optimizer = None):
 
     """
     assert os.path.exists(filename), "Checkpoint dir does not exist!"
-
     print(f"Loading checkpoint from: {filename}")
     checkpoint = torch.load(filename, map_location = torch.device("cpu"))
 
     model.load_state_dict(checkpoint["model_state_dict"])
-
     if optimizer is not None:
         optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
-
     epoch = checkpoint["epoch"]
-
     return model, optimizer, epoch
 
 

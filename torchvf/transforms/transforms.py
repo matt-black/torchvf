@@ -114,7 +114,6 @@ class HorizontalFlip:
 
             if vf is not None:
                 vf = h_flip(vf)
-
                 # Must change the order of VF if doing
                 # horizontal flip.
                 vf[0] = -vf[0]
@@ -133,7 +132,6 @@ class VerticalFlip:
 
             if vf is not None:
                 vf = v_flip(vf)
-
                 # Must change the order of VF if doing
                 # vertical flip.
                 vf[1] = -vf[1]

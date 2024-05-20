@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from torchvf.dataloaders.sartorius import Sartorius
 from torchvf.dataloaders.bpcis import BPCIS
+from torchvf.dataloaders.phase import PhaseDataset
+from torchvf.dataloaders.rgb import RgbDataset
 
 from torchvf.dataloaders.dataloader import MultiEpochsDataLoader
 

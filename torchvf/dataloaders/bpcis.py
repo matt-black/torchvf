@@ -61,9 +61,10 @@ class BPCIS(Dataset):
         __getitem__: Return the image and mask respectively of index i. 
 
     """
-    def __init__(self, data_dir, split = "bact_fluor_train",
-                 vf = False, vf_delimiter = "_vf", transforms = None,
-                 copy = None, remove = None):
+    def __init__(self, data_dir, split="train",
+                 vf=False, vf_delimiter="_vf",
+                 transforms=None,
+                 copy=None, remove=None):
         self.transforms = transforms 
         self.split_dir = os.path.join(data_dir, split)
 

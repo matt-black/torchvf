@@ -21,7 +21,7 @@ from torchvf.transforms.transforms import (
 )
 
 train_transform = Compose([
-    RandomCrop(256, 256),
+    RandomCrop(512, 512),
     VerticalFlip(p = 0.25),
     HorizontalFlip(p = 0.25),
     ToFloat(255)
@@ -36,8 +36,3 @@ transforms = {
     "eval": eval_transform,
     None: None
 }
-
-
-
-
-

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from torchvf.utils.clustering import cluster
+from torchvf.utils.training import EarlyStopper
 from torchvf.utils.tiling import get_tiler
 from torchvf.utils.logger import setup_logger
 from torchvf.utils.utils import *
